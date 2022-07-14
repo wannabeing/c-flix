@@ -1,13 +1,10 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* 영어 */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap");
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+/* 한글 */
+@import url("https://fonts.googleapis.com/css?family=Sunflower:500,700");
+@import url("https://fonts.googleapis.com/css?family=Song+Myung:400");
+@import url("https://fonts.googleapis.com/css?family=Nanum+Myeongjo:400,800");
+/* 한글, description */
+@import url("https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400");
+@import url("https://fonts.googleapis.com/css?family=Do+Hyeon:400");
