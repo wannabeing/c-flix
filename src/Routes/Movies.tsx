@@ -1,18 +1,23 @@
-import {
-  AnimatePresence,
-  motion,
-  useViewportScroll,
-  Variants,
-} from "framer-motion";
+import { AnimatePresence, motion, useScroll, Variants } from "framer-motion";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
-import { getMovieNowPlaying, INowPlaying } from "../api";
-import { getPosterPath } from "../utils";
+import { getMovieNowPlaying, IGetMovies } from "../apis/movieApis";
+import Popular from "../components/Popular";
+import { getPosterPath } from "../utils/utils";
+
+const Test = styled.div`
+  margin-top: 10%;
+  width: 100%;
+  height: 35vh;
+  background-color: white;
+`;
 
 const Wrapper = styled.div`
-  background-color: ${(props) => props.theme.boardColor};
+  height: 300vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
 `;
 const Loader = styled.div`
   display: flex;
@@ -60,9 +65,16 @@ const BannerOverview = styled.p`
   line-height: 1;
 `;
 
-const Slider = styled.div`
+const FirstSlider = styled.div`
   position: relative;
   top: -150px;
+`;
+const Slider = styled.div``;
+const SliderTitle = styled.h2`
+  margin-left: 10px;
+  margin-bottom: 20px;
+  font-size: 28px;
+  text-shadow: 2px 2px 2px black;
 `;
 const SliderRow = styled(motion.div)`
   position: absolute;
@@ -84,7 +96,7 @@ const Box = styled(motion.div)<{ posterpath: string }>`
   justify-content: center;
   align-items: center;
   font-family: "Song Myung";
-  font-size: 36px;
+  font-size: 18px;
   font-weight: 800;
   text-align: center;
   color: ${(props) => props.theme.boardColor};
@@ -122,11 +134,11 @@ const BoxInfo = styled(motion.div)`
     color: ${(props) => props.theme.redColor};
   }
 `;
-const Overlay = styled(motion.div)<{ height: string }>`
-  position: absolute;
+const Overlay = styled(motion.div)`
+  position: fixed;
   top: 0;
   width: 100%;
-  height: ${(props) => props.height};
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
 `;
 const Modal = styled(motion.div)`
@@ -231,13 +243,21 @@ const OverlayVariants: Variants = {
   },
 };
 
-function Home() {
-  const { data, isLoading } = useQuery<INowPlaying>(
+function Movies() {
+  const { data, isLoading } = useQuery<IGetMovies>(
     ["movies", "nowPlay"],
     getMovieNowPlaying
   );
 
+  // now_playing Index
   const [index, setIndex] = useState(0);
+  // popular Index
+  const [popIndex, setPopindex] = useState(0);
+  // top_rated Index
+  const [topIndex, setTopindex] = useState(0);
+  // upcoming Index
+  const [upIndex, setUpindex] = useState(0);
+
   const plusIndex = () => {
     if (data) {
       // 애니메이션 아직 안끝남
@@ -247,7 +267,9 @@ function Home() {
       toggleLeave();
       // 슬라이더 내 영화정보 몇개인지, 몇페이지까지 슬라이더를 생성할껀지 결정
       const totalMovies = data.results.length - 1;
-      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      const maxIndex = Math.floor(totalMovies / offset);
+      console.log(maxIndex);
+
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
@@ -280,7 +302,7 @@ function Home() {
     history.goBack();
   };
   // 해당 위치의 y좌표를 알기 위해서
-  const { scrollY } = useViewportScroll();
+  const { scrollY } = useScroll();
 
   // API를 통해 받은 정보를 modal창에 전달하기
   const findMovieInfo =
@@ -303,59 +325,63 @@ function Home() {
             </BannerTitle>
             <BannerOverview>{data?.results[0].overview}</BannerOverview>
           </Banner>
-          <Slider>
+          <FirstSlider>
             <AnimatePresence initial={false} onExitComplete={toggleLeave}>
               {
-                <SliderRow
-                  key={index}
-                  variants={RowVariants}
-                  transition={{ type: "tween", duration: 1 }}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                >
-                  {data?.results
-                    .slice(1)
-                    .slice(offset * index, offset * index + offset)
-                    .map((movie) => (
-                      <Box
-                        layoutId={movie.id + ""}
-                        onClick={() => boxClicked(movie.id)}
-                        key={movie.id}
-                        variants={BoxVariants}
-                        initial="normal"
-                        transition={{ type: "tween" }}
-                        whileHover="hover"
-                        posterpath={getPosterPath(
-                          movie.backdrop_path
-                            ? movie.backdrop_path
-                            : movie.poster_path
-                        )}
-                      >
-                        {movie.title
-                          ? movie.title.split(":", 1)
-                          : movie.original_title.split(":", 1)}
-                        <BoxInfo variants={BoxInfoVariants}>
-                          <span id="vote">
-                            ★{" "}
-                            {movie.vote_average
-                              ? movie.vote_average
-                              : "정보없음"}
-                          </span>
-                          <span>개봉일: {movie.release_date}</span>
-                        </BoxInfo>
-                      </Box>
-                    ))}
-                </SliderRow>
+                <>
+                  <SliderTitle>Now Playing</SliderTitle>
+                  <SliderRow
+                    key={index}
+                    variants={RowVariants}
+                    transition={{ type: "tween", duration: 1 }}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    {data?.results
+                      .slice(1)
+                      .slice(offset * index, offset * index + offset)
+                      .map((movie) => (
+                        <Box
+                          layoutId={movie.id + ""}
+                          onClick={() => boxClicked(movie.id)}
+                          key={movie.id}
+                          variants={BoxVariants}
+                          initial="normal"
+                          transition={{ type: "tween" }}
+                          whileHover="hover"
+                          posterpath={getPosterPath(
+                            movie.backdrop_path
+                              ? movie.backdrop_path
+                              : movie.poster_path
+                          )}
+                        >
+                          {movie.title
+                            ? movie.title.split(":", 1)
+                            : movie.original_title.split(":", 1)}
+                          <BoxInfo variants={BoxInfoVariants}>
+                            <span id="vote">
+                              ★{" "}
+                              {movie.vote_average
+                                ? movie.vote_average
+                                : "정보없음"}
+                            </span>
+                            <span>개봉일: {movie.release_date}</span>
+                          </BoxInfo>
+                        </Box>
+                      ))}
+                  </SliderRow>
+                </>
               }
             </AnimatePresence>
-          </Slider>
+          </FirstSlider>
+          <Popular />
+          <Popular />
           <AnimatePresence>
             {movieMatch ? (
               <>
                 <Overlay
                   onClick={overlayClicked}
-                  height={window.outerHeight + "px"}
                   variants={OverlayVariants}
                   initial="normal"
                   animate="visible"
@@ -397,4 +423,4 @@ function Home() {
     </Wrapper>
   );
 }
-export default Home;
+export default Movies;

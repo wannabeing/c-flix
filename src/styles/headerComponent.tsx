@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 
 export const Nav = styled(motion.nav)`
+  z-index: 99;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -39,6 +40,7 @@ export const Item = styled.li<any | null>`
   margin-right: 20px;
   transition: color 0.3s ease-in-out;
   cursor: pointer;
+  font-size: 16px;
   color: ${(props) =>
     props.isMatch
       ? props.isMatch.isExact

@@ -12,7 +12,7 @@ export interface IMovie {
   vote_average: string;
 }
 
-export interface INowPlaying {
+export interface IGetMovies {
   dates: {
     maximum: string;
     minimum: string;
@@ -27,6 +27,13 @@ export async function getMovieNowPlaying() {
   return await (
     await fetch(
       `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&language=ko&page=1&region=kr`
+    )
+  ).json();
+}
+export async function getMoviePopular() {
+  return await (
+    await fetch(
+      `${BASE_PATH}/movie/popular?api_key=${API_KEY}&language=ko&page=1&region=kr`
     )
   ).json();
 }
