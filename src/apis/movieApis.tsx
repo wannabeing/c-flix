@@ -23,6 +23,38 @@ export interface IGetMovies {
   total_results: number;
 }
 
+export interface IGetMovieDetail {
+  id: number;
+  genres: [
+    {
+      id: number;
+      name: string;
+    }
+  ];
+  tagline: string;
+}
+export interface IGetMovieCredit {
+  id: number;
+  cast: [
+    {
+      id: number;
+      name: string;
+      original_name: string;
+      character: string;
+      profile_path: string;
+    }
+  ];
+  crew: [
+    {
+      id: number;
+      known_for_department: string;
+      name: string;
+      original_name: string;
+      profile_path: string;
+    }
+  ];
+}
+
 export async function getMovieNowPlaying() {
   return await (
     await fetch(
@@ -30,10 +62,22 @@ export async function getMovieNowPlaying() {
     )
   ).json();
 }
-export async function getMoviePopular() {
+export async function getMovies(kind: string) {
   return await (
     await fetch(
-      `${BASE_PATH}/movie/popular?api_key=${API_KEY}&language=ko&page=1&region=kr`
+      `${BASE_PATH}/movie/${kind}?api_key=${API_KEY}&language=ko&page=1&region=kr`
+    )
+  ).json();
+}
+export async function getMovieDetails(id: string) {
+  return await (
+    await fetch(`${BASE_PATH}/movie/${id}?api_key=${API_KEY}&language=ko`)
+  ).json();
+}
+export async function getMovieCredit(id: string) {
+  return await (
+    await fetch(
+      `${BASE_PATH}/movie/${id}/credits?api_key=${API_KEY}&language=ko`
     )
   ).json();
 }

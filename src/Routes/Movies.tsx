@@ -7,13 +7,6 @@ import { getMovieNowPlaying, IGetMovies } from "../apis/movieApis";
 import Popular from "../components/Popular";
 import { getPosterPath } from "../utils/utils";
 
-const Test = styled.div`
-  margin-top: 10%;
-  width: 100%;
-  height: 35vh;
-  background-color: white;
-`;
-
 const Wrapper = styled.div`
   height: 300vh;
   background-color: rgba(0, 0, 0, 0.8);
@@ -69,7 +62,6 @@ const FirstSlider = styled.div`
   position: relative;
   top: -150px;
 `;
-const Slider = styled.div``;
 const SliderTitle = styled.h2`
   margin-left: 10px;
   margin-bottom: 20px;
@@ -251,12 +243,6 @@ function Movies() {
 
   // now_playing Index
   const [index, setIndex] = useState(0);
-  // popular Index
-  const [popIndex, setPopindex] = useState(0);
-  // top_rated Index
-  const [topIndex, setTopindex] = useState(0);
-  // upcoming Index
-  const [upIndex, setUpindex] = useState(0);
 
   const plusIndex = () => {
     if (data) {
@@ -375,8 +361,9 @@ function Movies() {
               }
             </AnimatePresence>
           </FirstSlider>
-          <Popular />
-          <Popular />
+          <Popular kindName="popular" />
+          <Popular kindName="upcoming" />
+          {/* <Popular kindName="top_rated" /> */}
           <AnimatePresence>
             {movieMatch ? (
               <>
