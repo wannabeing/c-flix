@@ -25,6 +25,12 @@ export interface IGetMovies {
 
 export interface IGetMovieDetail {
   id: number;
+  backdrop_path: string;
+  poster_path: string;
+  title: string;
+  original_title: string;
+  overview: string;
+  vote_average: number;
   genres: [
     {
       id: number;
@@ -55,13 +61,6 @@ export interface IGetMovieCredit {
   ];
 }
 
-export async function getMovieNowPlaying() {
-  return await (
-    await fetch(
-      `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&language=ko&page=1&region=kr`
-    )
-  ).json();
-}
 export async function getMovies(kind: string) {
   return await (
     await fetch(
@@ -69,7 +68,7 @@ export async function getMovies(kind: string) {
     )
   ).json();
 }
-export async function getMovieDetails(id: string) {
+export async function getMovieDetail(id: string) {
   return await (
     await fetch(`${BASE_PATH}/movie/${id}?api_key=${API_KEY}&language=ko`)
   ).json();

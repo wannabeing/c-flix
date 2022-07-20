@@ -1,8 +1,8 @@
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import Home from "./Routes/Movies";
 import Search from "./Routes/Search";
 import Tv from "./Routes/Tv";
 import Header from "./components/Header";
+import Movie from "./Routes/Movie";
 
 function App() {
   return (
@@ -15,8 +15,8 @@ function App() {
         <Route path="/search">
           <Search />
         </Route>
-        <Route path={["/", "movies/:id", "movies/:kind/:id"]}>
-          <Home />
+        <Route path={["/", "movies/:id", "tv/:id"]}>
+          <Movie />
         </Route>
       </Switch>
     </Router>

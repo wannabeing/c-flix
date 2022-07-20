@@ -2,9 +2,14 @@ import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { getTv, getTvDetail, IGetTv, IGetTvDetail } from "../apis/tvApis";
+import {
+  getMovieDetail,
+  getMovies,
+  IGetMovieDetail,
+  IGetMovies,
+} from "../apis/movieApis";
 import Loader from "../components/Loader";
-import TvSlider from "../components/TvSlider";
+import MovieSlider from "../components/MovieSlider";
 import { getPosterPath } from "../utils/utils";
 
 const Wrapper = styled.div`
@@ -71,30 +76,35 @@ const BannerBtn = styled.div`
   }
 `;
 
-function Tv() {
+function Movie() {
   // API 데이터 받아오기
-  const { data: popularData, isLoading: popularLoading } = useQuery<IGetTv>(
-    ["tv", "popular"],
-    () => getTv("popular")
+  const { data: nowData, isLoading: nowLoading } = useQuery<IGetMovies>(
+    ["movie", "now"],
+    () => getMovies("now_playing")
   );
-  const { data: onairData, isLoading: onairLoading } = useQuery<IGetTv>(
-    ["tv", "onair"],
-    () => getTv("on_the_air")
+  const { data: popularData, isLoading: popularLoading } = useQuery<IGetMovies>(
+    ["movie", "popular"],
+    () => getMovies("popular")
   );
-  const { data: topData, isLoading: topLoading } = useQuery<IGetTv>(
-    ["tv", "top"],
-    () => getTv("top_rated")
+  const { data: topData, isLoading: topLoading } = useQuery<IGetMovies>(
+    ["movie", "top"],
+    () => getMovies("top_rated")
   );
-  // 배너 API
-  const { data: bannerData, isLoading: bannerLoading } = useQuery<IGetTvDetail>(
-    ["tv", "banner"],
-    () => getTvDetail(String(197067))
+  const { data: upData, isLoading: upLoading } = useQuery<IGetMovies>(
+    ["movie", "upcoming"],
+    () => getMovies("upcoming")
   );
+
+  // 배너 API (마녀2)
+  const { data: bannerData, isLoading: bannerLoading } =
+    useQuery<IGetMovieDetail>(["movie", "banner"], () =>
+      getMovieDetail(String(615173))
+    );
 
   const history = useHistory();
 
   const moveBanner = (id: string) => {
-    history.push(`/tv/${id}`);
+    history.push(`/movie/${id}`);
   };
 
   // 불필요한 API 호출을 막음
@@ -102,13 +112,17 @@ function Tv() {
 
   return (
     <Wrapper>
-      {popularLoading && topLoading && onairLoading && bannerLoading ? (
+      {nowLoading &&
+      popularLoading &&
+      topLoading &&
+      upLoading &&
+      bannerLoading ? (
         <Loader />
       ) : (
         <>
           <Banner posterPath={getPosterPath(bannerData?.backdrop_path || "")}>
             <BannerTitle>
-              <span>{bannerData?.name}</span>
+              <span>{bannerData?.title}</span>
               <span id="vote">★ {bannerData?.vote_average}</span>
             </BannerTitle>
             <BannerOverview>{bannerData?.overview}</BannerOverview>
@@ -116,12 +130,13 @@ function Tv() {
               자세히 보기
             </BannerBtn>
           </Banner>
-          <TvSlider kind="popular" data={popularData} />
-          <TvSlider kind="ontheair" data={onairData} />
-          <TvSlider kind="toprated" data={topData} />
+          <MovieSlider kind="upcoming" data={upData} />
+          <MovieSlider kind="now" data={nowData} />
+          <MovieSlider kind="toprated" data={topData} />
+          <MovieSlider kind="popular" data={popularData} />
         </>
       )}
     </Wrapper>
   );
 }
-export default Tv;
+export default Movie;
