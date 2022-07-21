@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -120,6 +121,9 @@ function Movie() {
         <Loader />
       ) : (
         <>
+          <Helmet>
+            <title>MOVIES: C-FLIX</title>
+          </Helmet>
           <Banner posterPath={getPosterPath(bannerData?.backdrop_path || "")}>
             <BannerTitle>
               <span>{bannerData?.title}</span>

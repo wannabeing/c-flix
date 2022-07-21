@@ -1,4 +1,5 @@
 import { AnimatePresence, motion, Variants } from "framer-motion";
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -212,6 +213,14 @@ function DetailTv({ id, kind }: IProps) {
           >
             {detailData ? (
               <>
+                <Helmet>
+                  <title>
+                    {detailData.name
+                      ? detailData.name
+                      : detailData.original_name}
+                  </title>
+                </Helmet>
+
                 <ModalPoster
                   posterpath={getPosterPath(
                     detailData.backdrop_path

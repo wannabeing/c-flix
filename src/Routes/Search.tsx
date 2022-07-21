@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -15,7 +16,7 @@ import TvSlider from "../components/tv/TvSlider";
 
 const Wrapper = styled.div`
   margin-top: 80px;
-  height: 100vh;
+  height: 40vh;
 `;
 const Div = styled.div`
   display: flex;
@@ -43,9 +44,14 @@ const Key = styled.div`
 const Nothing = styled.div`
   margin-top: 50vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   color: white;
+  span:nth-child(2) {
+    font-size: 18px;
+    margin-top: 20px;
+  }
 `;
 
 function Search() {
@@ -76,6 +82,10 @@ function Search() {
         <Loader />
       ) : (
         <>
+          <Helmet>
+            <title>SEARCH: C-FLIX</title>
+          </Helmet>
+
           {keyData?.results.length &&
           movieData?.results.length &&
           tvData?.results.length ? (
@@ -92,7 +102,10 @@ function Search() {
               <TvSlider kind="search" data={tvData} />
             </>
           ) : (
-            <Nothing>검색결과가 없습니다.</Nothing>
+            <Nothing>
+              <span>검색결과가 없습니다.</span>
+              <span>상단 오른쪽의 검색 아이콘을 클릭하여 검색해주세요!</span>
+            </Nothing>
           )}
         </>
       )}
