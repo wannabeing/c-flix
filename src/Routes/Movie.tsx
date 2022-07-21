@@ -9,7 +9,7 @@ import {
   IGetMovies,
 } from "../apis/movieApis";
 import Loader from "../components/Loader";
-import MovieSlider from "../components/MovieSlider";
+import MovieSlider from "../components/movies/MovieSlider";
 import { getPosterPath } from "../utils/utils";
 
 const Wrapper = styled.div`

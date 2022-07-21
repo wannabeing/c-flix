@@ -1,12 +1,12 @@
-import { IGetMovies } from "../apis/movieApis";
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
-import nextImg from "../assets/images/next1.png";
-import prevImg from "../assets/images/prev1.png";
-import { getPosterPath } from "../utils/utils";
-import DetailMovie from "./DetailMovie";
+import { IGetTv } from "../../apis/tvApis";
+import nextImg from "../../assets/images/next1.png";
+import prevImg from "../../assets/images/prev1.png";
+import { getPosterPath } from "../../utils/utils";
+import DetailTv from "./DetailTv";
 
 const Slider = styled.div`
   position: relative;
@@ -14,12 +14,16 @@ const Slider = styled.div`
 `;
 const SliderTitle = styled.h2`
   margin-bottom: 20px;
+  padding-left: 10px;
+  color: white;
+  font-weight: 800;
 `;
 const SliderRow = styled(motion.div)`
   position: absolute;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 5px;
+  padding: 0 5px;
   width: 100%;
 `;
 const Box = styled(motion.div)<{ posterpath: string }>`
@@ -138,25 +142,30 @@ const BoxBottomVariants: Variants = {
 
 interface IProps {
   kind: string;
-  data?: IGetMovies;
+  data?: IGetTv;
 }
-function MovieSlider({ kind, data }: IProps) {
-  let titleName;
 
-  switch (kind) {
-    case "upcoming":
-      titleName = "상영예정 영화";
-      break;
-    case "now":
-      titleName = "상영중인 영화";
-      break;
-    case "popular":
-      titleName = "인기있는 영화";
-      break;
-    case "toprated":
-      titleName = "평점높은 영화";
-      break;
-  }
+function TvSlider({ kind, data }: IProps) {
+  const [titleName, setTitle] = useState("");
+  const [isSearch, setSearch] = useState(false);
+
+  useEffect(() => {
+    switch (kind) {
+      case "ontheair":
+        setTitle("방영중인 TV 프로그램");
+        break;
+      case "popular":
+        setTitle("인기있는 TV 프로그램");
+        break;
+      case "toprated":
+        setTitle("평점높은 TV 프로그램");
+        break;
+      case "search":
+        setTitle("TV 프로그램");
+        setSearch(true);
+        break;
+    }
+  }, [kind]);
 
   // 슬라이드 다음페이지 넘기기 위한 인덱스
   const [index, setIndex] = useState(0);
@@ -175,8 +184,10 @@ function MovieSlider({ kind, data }: IProps) {
   // Box 클릭 시, url 이동하기 위해 (모달창)
   const history = useHistory();
 
-  // movieMatch: "/movie/:id" URL로 이동하였는지 확인한다.
-  const movieMatch = useRouteMatch<{ id: string }>("/movie/:id");
+  // tvMatch: "/tv/:id" URL로 이동하였는지 확인한다.
+  // searchMatch : "/search/tv/:id" URL로 이동하였는지 확인한다.
+  const tvMatch = useRouteMatch<{ id: string }>("/tv/:id");
+  const searchMatch = useRouteMatch<{ id: string }>("/search/tv/:id");
 
   /* ---------- Functions  ----------  */
   /* nextIndex(): 인덱스 증가시키는 함수, 다음 슬라이드로  */
@@ -217,9 +228,15 @@ function MovieSlider({ kind, data }: IProps) {
   };
   const clickBox = (id: number) => {
     setTimeout(() => {
-      history.push(`/movie/${id}`);
+      // 검색페이지에서 모달을 클릭했는지 확인
+      if (isSearch) {
+        history.push(`/search/tv/${id}`);
+      } else {
+        history.push(`/tv/${id}`);
+      }
     }, 50);
   };
+
   return (
     <>
       {/* Slider */}
@@ -241,30 +258,28 @@ function MovieSlider({ kind, data }: IProps) {
           >
             {data?.results
               .slice(offset * index, offset * index + offset)
-              .map((movie) => (
+              .map((tv) => (
                 <Box
-                  key={movie.id}
+                  key={tv.id}
                   posterpath={getPosterPath(
-                    movie.backdrop_path
-                      ? movie.backdrop_path
-                      : movie.poster_path
+                    tv.backdrop_path ? tv.backdrop_path : tv.poster_path
                   )}
                   variants={BoxHoverVariants}
                   initial="initial"
                   whileHover="hover"
                   transition={{ type: "tween" }}
-                  onClick={() => clickBox(movie.id)}
+                  onClick={() => clickBox(tv.id)}
                 >
                   <span id="title">
-                    {movie.title
-                      ? movie.title.split(":", 1)
-                      : movie.original_title.split(":", 1)}
+                    {tv.name
+                      ? tv.name.split(":", 1)
+                      : tv.original_name.split(":", 1)}
                   </span>
                   <BoxBottom variants={BoxBottomVariants}>
                     <span id="vote">
-                      ★ {movie.vote_average ? movie.vote_average : "정보없음"}
+                      ★ {tv.vote_average ? tv.vote_average : "정보없음"}
                     </span>
-                    <span>개봉일: {movie.release_date}</span>
+                    <span>개봉일: {tv.first_air_date}</span>
                   </BoxBottom>
                 </Box>
               ))}
@@ -288,11 +303,12 @@ function MovieSlider({ kind, data }: IProps) {
 
       {/* Modal */}
       <AnimatePresence>
-        {movieMatch ? (
-          <DetailMovie id={movieMatch.params.id} kind={kind} />
+        {tvMatch ? <DetailTv id={tvMatch.params.id} kind={kind} /> : null}
+        {searchMatch ? (
+          <DetailTv id={searchMatch.params.id} kind={kind} />
         ) : null}
       </AnimatePresence>
     </>
   );
 }
-export default MovieSlider;
+export default TvSlider;

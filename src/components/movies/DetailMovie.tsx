@@ -7,11 +7,12 @@ import {
   getMovieDetail,
   IGetMovieCredit,
   IGetMovieDetail,
-} from "../apis/movieApis";
-import { getPosterPath } from "../utils/utils";
-import Loader from "./Loader";
+} from "../../apis/movieApis";
+import { getPosterPath } from "../../utils/utils";
+import Loader from "../Loader";
 
 const Modal = styled(motion.div)`
+  z-index: 99;
   position: absolute;
   width: 55vw;
   height: 80vh;

@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getTv, getTvDetail, IGetTv, IGetTvDetail } from "../apis/tvApis";
 import Loader from "../components/Loader";
-import TvSlider from "../components/TvSlider";
+import TvSlider from "../components/tv/TvSlider";
 import { getPosterPath } from "../utils/utils";
 
 const Wrapper = styled.div`

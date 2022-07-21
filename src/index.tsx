@@ -5,6 +5,7 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { RecoilRoot } from "recoil";
 import { theme } from "./theme";
 import { QueryClientProvider, QueryClient } from "react-query";
+import { Helmet } from "react-helmet";
 
 const Reset = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -84,6 +85,9 @@ root.render(
       <QueryClientProvider client={client}>
         <ThemeProvider theme={theme}>
           <Reset />
+          <Helmet>
+            <title>C-FLIX</title>
+          </Helmet>
           <App />
         </ThemeProvider>
       </QueryClientProvider>

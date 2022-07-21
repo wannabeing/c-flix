@@ -7,10 +7,10 @@ import {
   getTvDetail,
   IGetTvCredit,
   IGetTvDetail,
-} from "../apis/tvApis";
+} from "../../apis/tvApis";
 
-import { getPosterPath } from "../utils/utils";
-import Loader from "./Loader";
+import { getPosterPath } from "../../utils/utils";
+import Loader from "../Loader";
 
 const Modal = styled(motion.div)`
   position: absolute;
