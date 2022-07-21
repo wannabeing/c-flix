@@ -186,8 +186,8 @@ function TvSlider({ kind, data }: IProps) {
 
   // tvMatch: "/tv/:id" URL로 이동하였는지 확인한다.
   // searchMatch : "/search/tv/:id" URL로 이동하였는지 확인한다.
-  const tvMatch = useRouteMatch<{ id: string }>("/c-flix/tv/:id");
-  const searchMatch = useRouteMatch<{ id: string }>("/c-flix/search/tv/:id");
+  const tvMatch = useRouteMatch<{ id: string }>("/tv/:id");
+  const searchMatch = useRouteMatch<{ id: string }>("/search/tv/:id");
 
   /* ---------- Functions  ----------  */
   /* nextIndex(): 인덱스 증가시키는 함수, 다음 슬라이드로  */
@@ -230,9 +230,9 @@ function TvSlider({ kind, data }: IProps) {
     setTimeout(() => {
       // 검색페이지에서 모달을 클릭했는지 확인
       if (isSearch) {
-        history.push(`/c-flix/search/tv/${id}`);
+        history.push(`/search/tv/${id}`);
       } else {
-        history.push(`/c-flix/tv/${id}`);
+        history.push(`/tv/${id}`);
       }
     }, 50);
   };
