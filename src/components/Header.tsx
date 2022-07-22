@@ -142,7 +142,7 @@ function Header() {
 
   // 검색어(keyword)를 입력했을 때 실행되는 함수 (query-argument를 보낸다.)
   const onSubmit = (data: IForm) => {
-    history.push(`/c-flix//search?keyword=${data.keyword}`);
+    history.push(`/c-flix/search?keyword=${data.keyword}`);
     setValue("keyword", "");
   };
 
