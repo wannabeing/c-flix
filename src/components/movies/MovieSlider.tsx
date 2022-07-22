@@ -188,8 +188,8 @@ function MovieSlider({ kind, data }: IProps) {
 
   // movieMatch: "/movie/:id" URL로 이동하였는지 확인한다.
   // searchMatch: "/search/movie/:id" URL로 이동하였는지 확인한다.
-  const movieMatch = useRouteMatch<{ id: string }>("/movie/:id");
-  const searchMatch = useRouteMatch<{ id: string }>("/search/movie/:id");
+  const movieMatch = useRouteMatch<{ id: string }>("/c-flix/movie/:id");
+  const searchMatch = useRouteMatch<{ id: string }>("/c-flix/search/movie/:id");
 
   /* ---------- Functions  ----------  */
   /* nextIndex(): 인덱스 증가시키는 함수, 다음 슬라이드로  */
@@ -232,9 +232,9 @@ function MovieSlider({ kind, data }: IProps) {
     setTimeout(() => {
       // 검색페이지에서 모달을 클릭했는지 확인
       if (isSearch) {
-        history.push(`/search/movie/${id}`);
+        history.push(`/c-flix/search/movie/${id}`);
       } else {
-        history.push(`/movie/${id}`);
+        history.push(`/c-flix/movie/${id}`);
       }
     }, 50);
   };

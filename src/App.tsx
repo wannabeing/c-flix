@@ -1,4 +1,4 @@
-import { Route, HashRouter as Router, Switch } from "react-router-dom";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Search from "./Routes/Search";
 import Tv from "./Routes/Tv";
 import Header from "./components/Header";
@@ -9,13 +9,19 @@ function App() {
     <Router>
       <Header />
       <Switch>
-        <Route path="tv">
+        <Route path="/c-flix/tv">
           <Tv />
         </Route>
-        <Route path={["search", "search/movie/:id", "tv/:id"]}>
+        <Route
+          path={[
+            "/c-flix/search",
+            "/c-flix/search/movie/:id",
+            "/c-flix/tv/:id",
+          ]}
+        >
           <Search />
         </Route>
-        <Route path={["", "movie/:id", "tv/:id"]}>
+        <Route path={["/c-flix/", "/c-flix/movie/:id", "/c-flix/tv/:id"]}>
           <Movie />
         </Route>
       </Switch>
