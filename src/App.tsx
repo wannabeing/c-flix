@@ -1,11 +1,10 @@
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { Route, HashRouter as Router, Switch } from "react-router-dom";
 import Search from "./Routes/Search";
 import Tv from "./Routes/Tv";
 import Header from "./components/Header";
 import Movie from "./Routes/Movie";
 
 function App() {
-  const BASE_URL = "https://wannabeing.github.io/c-flix";
   return (
     <Router>
       <Header />
@@ -16,7 +15,7 @@ function App() {
         <Route path={["search", "search/movie/:id", "tv/:id"]}>
           <Search />
         </Route>
-        <Route path={["/", "movie/:id", "tv/:id"]}>
+        <Route path={["", "movie/:id", "tv/:id"]}>
           <Movie />
         </Route>
       </Switch>
