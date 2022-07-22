@@ -1,6 +1,6 @@
 # C-FLIX HOMEPAGE
 
-https://wannabeing.github.io/c-flix/#
+https://wannabeing.github.io/c-flix/#/c-flix/
 
 # Getting Started with Create React App
 
