@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/c-flix/static/css/main.cfc6f0d6.css",
-    "main.js": "/c-flix/static/js/main.de63c54e.js",
+    "main.js": "/c-flix/static/js/main.143931cb.js",
     "index.html": "/c-flix/index.html",
-    "main.de63c54e.js.map": "/c-flix/static/js/main.de63c54e.js.map"
+    "main.143931cb.js.map": "/c-flix/static/js/main.143931cb.js.map"
   },
   "entrypoints": [
     "static/css/main.cfc6f0d6.css",
-    "static/js/main.de63c54e.js"
+    "static/js/main.143931cb.js"
   ]
 }
