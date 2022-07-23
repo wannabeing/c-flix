@@ -192,7 +192,7 @@ function Header() {
             animate={{ scaleX: search ? 1 : 0 }}
             transition={{ type: "linear" }}
             placeholder="검색어를 입력해주세요"
-            {...register("keyword", { required: true, minLength: 3 })}
+            {...register("keyword", { required: true, minLength: 2 })}
           />
         </Search>
       </Column>
