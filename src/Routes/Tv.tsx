@@ -86,7 +86,7 @@ function Tv() {
     ["tv", "top"],
     () => getTv("top_rated")
   );
-  // 배너 API
+  // 배너 API (우영우)
   const { data: bannerData, isLoading: bannerLoading } = useQuery<IGetTvDetail>(
     ["tv", "banner"],
     () => getTvDetail(String(197067))
@@ -95,7 +95,7 @@ function Tv() {
   const history = useHistory();
 
   const moveBanner = (id: string) => {
-    history.push(`/c-flix/tv/${id}`);
+    history.push(`/tv/${id}`);
   };
 
   // 불필요한 API 호출을 막음

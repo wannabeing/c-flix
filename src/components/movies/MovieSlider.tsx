@@ -7,6 +7,7 @@ import nextImg from "../../assets/images/next1.png";
 import prevImg from "../../assets/images/prev1.png";
 import { getPosterPath } from "../../utils/utils";
 import DetailMovie from "./DetailMovie";
+import Loader from "../Loader";
 
 const Slider = styled.div`
   position: relative;
@@ -188,8 +189,8 @@ function MovieSlider({ kind, data }: IProps) {
 
   // movieMatch: "/movie/:id" URL로 이동하였는지 확인한다.
   // searchMatch: "/search/movie/:id" URL로 이동하였는지 확인한다.
-  const movieMatch = useRouteMatch<{ id: string }>("/c-flix/movie/:id");
-  const searchMatch = useRouteMatch<{ id: string }>("/c-flix/search/movie/:id");
+  const movieMatch = useRouteMatch<{ id: string }>("/movie/:id");
+  const searchMatch = useRouteMatch<{ id: string }>("/search/movie/:id");
 
   /* ---------- Functions  ----------  */
   /* nextIndex(): 인덱스 증가시키는 함수, 다음 슬라이드로  */
@@ -232,87 +233,94 @@ function MovieSlider({ kind, data }: IProps) {
     setTimeout(() => {
       // 검색페이지에서 모달을 클릭했는지 확인
       if (isSearch) {
-        history.push(`/c-flix/search/movie/${id}`);
+        history.push(`/search/movie/${id}`);
       } else {
-        history.push(`/c-flix/movie/${id}`);
+        history.push(`/movie/${id}`);
       }
     }, 50);
   };
   return (
     <>
-      {/* Slider */}
-      <Slider>
-        <SliderTitle>{titleName}</SliderTitle>
-        <AnimatePresence
-          custom={isNext}
-          onExitComplete={toggleLeave}
-          initial={false}
-        >
-          <SliderRow
-            key={index}
-            transition={{ type: "tween", duration: 1 }}
-            variants={RowVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            custom={isNext}
-          >
-            {data?.results
-              .slice(offset * index, offset * index + offset)
-              .map((movie) => (
-                <Box
-                  key={movie.id}
-                  posterpath={getPosterPath(
-                    movie.backdrop_path
-                      ? movie.backdrop_path
-                      : movie.poster_path
-                  )}
-                  variants={BoxHoverVariants}
-                  initial="initial"
-                  whileHover="hover"
-                  transition={{ type: "tween" }}
-                  onClick={() => clickBox(movie.id)}
-                >
-                  <span id="title">
-                    {movie.title
-                      ? movie.title.split(":", 1)
-                      : movie.original_title.split(":", 1)}
-                  </span>
-                  <BoxBottom variants={BoxBottomVariants}>
-                    <span id="vote">
-                      ★ {movie.vote_average ? movie.vote_average : "정보없음"}
-                    </span>
-                    <span>개봉일: {movie.release_date}</span>
-                  </BoxBottom>
-                </Box>
-              ))}
-          </SliderRow>
-        </AnimatePresence>
-        <PrevIcon
-          src={prevImg}
-          variants={IconVariants}
-          initial="initial"
-          whileHover="hover"
-          onClick={prevIndex}
-        />
-        <NextIcon
-          src={nextImg}
-          variants={IconVariants}
-          initial="initial"
-          whileHover="hover"
-          onClick={nextIndex}
-        />
-      </Slider>
+      {data ? (
+        <>
+          {/* Slider */}
+          <Slider>
+            <SliderTitle>{titleName}</SliderTitle>
+            <AnimatePresence
+              custom={isNext}
+              onExitComplete={toggleLeave}
+              initial={false}
+            >
+              <SliderRow
+                key={index}
+                transition={{ type: "tween", duration: 1 }}
+                variants={RowVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                custom={isNext}
+              >
+                {data?.results
+                  .slice(offset * index, offset * index + offset)
+                  .map((movie) => (
+                    <Box
+                      key={movie.id}
+                      posterpath={getPosterPath(
+                        movie.backdrop_path
+                          ? movie.backdrop_path
+                          : movie.poster_path
+                      )}
+                      variants={BoxHoverVariants}
+                      initial="initial"
+                      whileHover="hover"
+                      transition={{ type: "tween" }}
+                      onClick={() => clickBox(movie.id)}
+                    >
+                      <span id="title">
+                        {movie.title
+                          ? movie.title.split(":", 1)
+                          : movie.original_title.split(":", 1)}
+                      </span>
+                      <BoxBottom variants={BoxBottomVariants}>
+                        <span id="vote">
+                          ★{" "}
+                          {movie.vote_average ? movie.vote_average : "정보없음"}
+                        </span>
+                        <span>개봉일: {movie.release_date}</span>
+                      </BoxBottom>
+                    </Box>
+                  ))}
+              </SliderRow>
+            </AnimatePresence>
+            <PrevIcon
+              src={prevImg}
+              variants={IconVariants}
+              initial="initial"
+              whileHover="hover"
+              onClick={prevIndex}
+            />
+            <NextIcon
+              src={nextImg}
+              variants={IconVariants}
+              initial="initial"
+              whileHover="hover"
+              onClick={nextIndex}
+            />
+          </Slider>
 
-      {/* Modal */}
-      <AnimatePresence>
-        {movieMatch ? (
-          <DetailMovie id={movieMatch.params.id} kind={kind} />
-        ) : null}
-        {searchMatch ? (
-          <DetailMovie id={searchMatch.params.id} kind={kind} />
-        ) : null}
-      </AnimatePresence>
+          {/* Modal */}
+          <AnimatePresence>
+            {movieMatch ? (
+              <DetailMovie id={movieMatch.params.id} kind={kind} />
+            ) : null}
+            {searchMatch ? (
+              <DetailMovie id={searchMatch.params.id} kind={kind} />
+            ) : null}
+          </AnimatePresence>
+        </>
+      ) : (
+        <Loader />
+      )}
     </>
   );
 }

@@ -9,19 +9,13 @@ function App() {
     <Router>
       <Header />
       <Switch>
-        <Route path="/c-flix/tv">
+        <Route path="/tv">
           <Tv />
         </Route>
-        <Route
-          path={[
-            "/c-flix/search",
-            "/c-flix/search/movie/:id",
-            "/c-flix/tv/:id",
-          ]}
-        >
+        <Route path={["/search", "/search/movie/:id", "/tv/:id"]}>
           <Search />
         </Route>
-        <Route path={["/c-flix/", "/c-flix/movie/:id", "/c-flix/tv/:id"]}>
+        <Route path={["/", "/movie/:id", "/tv/:id"]}>
           <Movie />
         </Route>
       </Switch>

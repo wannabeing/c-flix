@@ -105,7 +105,7 @@ function Movie() {
   const history = useHistory();
 
   const moveBanner = (id: string) => {
-    history.push(`/c-flix/movie/${id}`);
+    history.push(`/movie/${id}`);
   };
 
   // 불필요한 API 호출을 막음
