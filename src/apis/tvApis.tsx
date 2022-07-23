@@ -1,4 +1,4 @@
-const API_KEY = "ff60f073259513a99c48e8293fae4fa6";
+const API_KEY = process.env.API_KEY;
 const BASE_PATH = "https://api.themoviedb.org/3";
 
 interface ITv {
