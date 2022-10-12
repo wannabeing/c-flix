@@ -244,7 +244,9 @@ function DetailMovie({ kind, id }: IProps) {
                 <ModalPrevInfo>
                   <span id="star">★</span>
                   <span id="star">
-                    {detailData.vote_average ? detailData.vote_average : "0.0"}
+                    {detailData.vote_average
+                      ? +detailData.vote_average.toFixed(1)
+                      : "0.0"}
                   </span>
                   <span>
                     {detailData.overview

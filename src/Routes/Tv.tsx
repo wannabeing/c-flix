@@ -113,7 +113,12 @@ function Tv() {
           <Banner posterPath={getPosterPath(bannerData?.backdrop_path || "")}>
             <BannerTitle>
               <span>{bannerData?.name}</span>
-              <span id="vote">★ {bannerData?.vote_average}</span>
+              <span id="vote">
+                ★{" "}
+                {bannerData?.vote_average
+                  ? +bannerData.vote_average.toFixed(1)
+                  : 0.0}
+              </span>
             </BannerTitle>
             <BannerOverview>{bannerData?.overview}</BannerOverview>
             <BannerBtn onClick={() => moveBanner(bannerData?.id + "")}>
