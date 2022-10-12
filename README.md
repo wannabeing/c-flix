@@ -85,7 +85,7 @@
 
 > ### 로딩 후
 >
-> ![](https://velog.velcdn.com/images/wannabeing/post/dc0b9779-ef52-447f-b08c-19dc74a78752/image.png)
+> ![image](https://user-images.githubusercontent.com/79440384/195436637-6636f6f6-04d9-4b94-99e4-f7bdc7a924d6.png)
 
 </details>
 <details>
